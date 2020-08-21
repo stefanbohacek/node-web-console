@@ -8,10 +8,10 @@ const style = require( 'ansi-styles' ),
       helpers = require.main.require( './helpers/helpers.js' );
 
 const delay = async function( milliseconds ) {
-  return new Promise( function(resolve) {
-    setTimeout( function() {
-      return resolve();
-    }, milliseconds);
+  return new Promise( function( resolve ) {
+    setTimeout( function( ) {
+      return resolve( );
+    }, milliseconds );
   } );
 };
 
@@ -26,18 +26,18 @@ ${style.green.open}Hi${ text }${style.green.close}
 \n`  
 };
 
-const animateHello = async function animateHello(stream) {
-  for (let i = 0; i < 20; i += 1) {
+const animateHello = async function animateHello( stream ) {
+  for ( let i = 0; i < 20; i += 1 ) {
     try {
         if ( !stream.destroyed ){
-          stream.push(hello(`, it's ${new Date()}`));
+          stream.push( hello( `, it's ${new Date( )}` ) );
         }      
-    } catch (err) {
+    } catch ( err ) {
       /* noop */
     }
-    await delay(1000);
+    await delay( 1000 );
   }
-  stream.push(null);
+  stream.push( null );
 };
 
 module.exports = {
