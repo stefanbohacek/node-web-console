@@ -8,4 +8,4 @@ This project is based on Atul's [blog post](https://medium.com/@atulanand94/buil
 
 See `routes/index.js` and `hello.js` and `racing.js` inside the `helpers` folder.
 
-Check out [awesome-console-services](https://github.com/chubin/awesome-console-services) for some more examples
+Visit my blog [for more details and examples of what you can make](https://stefanbohacek.com/project/node-web-console/).
