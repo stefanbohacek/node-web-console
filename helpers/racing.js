@@ -1,5 +1,5 @@
 /* The race is on! */
-const racers = [
+const allRacers = [
   "🚗",
   "🚙",
   "🚚",
@@ -22,30 +22,29 @@ const racers = [
   "🛷",
 ];
 
-const helpers = require.main.require("./helpers/helpers.js"),
-  delay = async (milliseconds) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        return resolve();
-      }, milliseconds);
-    });
-  };
+const helpers = require.main.require("./helpers/helpers.js");
+
+const delay = async (milliseconds) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      return resolve();
+    }, milliseconds);
+  });
+};
 
 const getRacers = (options) => {
   const count = options.count || helpers.getRandomInt(3, 5);
-  const _racers = helpers.getRandomFromArray(racers, count);
+  let racers = helpers.getRandomFromArray(allRacers, count);
 
-  let selectedRacers = [];
-
-  _racers.forEach((racer) => {
-    selectedRacers.push({
+  racers = racers.map((racer) => {
+    return {
       vehicle: racer,
       speed: helpers.getRandomInt(1, 4),
       acceleration: helpers.getRandomRange(-0.2, 0.4, 1),
-    });
+    };
   });
 
-  return selectedRacers;
+  return racers;
 };
 
 const findWinner = (racers, fullObject) => {
@@ -61,6 +60,7 @@ const findWinner = (racers, fullObject) => {
       }
     }
   });
+
   return fastestRacer;
 };
 
@@ -84,23 +84,21 @@ module.exports = {
 
     if (options && options.cars) {
       raceOptions.count = options.cars;
-      if (raceOptions.count > racers.length) {
-        raceOptions.count = racers.length;
+      if (raceOptions.count > allRacers.length) {
+        raceOptions.count = allRacers.length;
       }
     }
 
-    const _racers = getRacers(raceOptions),
-      winner = findWinner(racers),
-      lastRacer = findLastRacer(racers),
-      lastRacerIndex = gridSize / lastRacer.speed;
-
-    console.log(racers);
+    const racers = getRacers(raceOptions);
+    const winner = findWinner(racers);
+    const lastRacer = findLastRacer(racers);
+    const lastRacerIndex = gridSize / lastRacer.speed;
 
     for (let i = 0; i < gridSize + 5; i += 1) {
       try {
         let racingGrid = `${helpers.symbols.PAGE_BREAK}\n`;
 
-        _racers.forEach((racer) => {
+        racers.forEach((racer) => {
           let repeatCount = gridSize - i * racer.speed;
           if (repeatCount < 0) {
             repeatCount = 0;
@@ -109,7 +107,7 @@ module.exports = {
         });
 
         if (i >= lastRacerIndex || i >= gridSize) {
-          racingGrid += `\n${winner} won the race 🏁\n\n`;
+          racingGrid += `\n${winner}  won the race 🏁\n\n`;
         }
         if (!stream.destroyed) {
           stream.push(racingGrid);
